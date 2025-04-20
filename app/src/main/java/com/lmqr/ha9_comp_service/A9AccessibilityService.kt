@@ -166,7 +166,7 @@ class A9AccessibilityService : AccessibilityService(),
     )
 
     override fun onKeyEvent(event: KeyEvent): Boolean {
-        if(event.scanCode == 766){
+        if(event.scanCode == 59){
             if (!Settings.canDrawOverlays(baseContext))
                     requestOverlayPermission()
             else
