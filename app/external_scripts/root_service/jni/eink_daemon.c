@@ -116,7 +116,7 @@ void epdCommitBitmap() {
 }
 
 void writeToEpdDisplayMode(const char* value) {
-    const char* filePath = "/sys/devices/platform/soc/soc:qcom,dsi-display-primary/epd_display_mode";
+    const char* filePath = "/sys/kernel/debug/eink_debug/global_mode";
     if(!valid_number(value)){
         LOGE("Error writing to %s: Invalid Number\n", filePath);
         return;
@@ -241,13 +241,13 @@ void processCommand(const char* command) {
     } else if (strcmp(command, "r") == 0) {
         epdForceClear();
     } else if (strcmp(command, "c") == 0) {
-        writeToEpdDisplayMode("515");
+        writeToEpdDisplayMode("177");
     } else if (strcmp(command, "b") == 0) {
-        writeToEpdDisplayMode("513");
+        writeToEpdDisplayMode("178");
     } else if (strcmp(command, "s") == 0) {
-        writeToEpdDisplayMode("518");
+        writeToEpdDisplayMode("180");
     } else if (strcmp(command, "p") == 0) {
-        writeToEpdDisplayMode("521");
+        writeToEpdDisplayMode("179");
     } else if (strncmp(command, "stw", 3) == 0) {
         if(valid_number(command+3))
             setWhiteThreshold(command+3);
