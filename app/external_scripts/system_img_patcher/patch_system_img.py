@@ -1416,19 +1416,6 @@ def patch_CallUI():
 
 def update_build_prop():
     properties = {
-        # Phone information
-        "ro.product.brand": "Crosscall",
-        "ro.product.device": "HLTE556N",
-        "ro.product.manufacturer": "QUALCOMM",
-        "ro.product.model": "HLTE556N",
-        "ro.product.name": "HLTE556N",
-        "ro.sf.lcd_density": "360",
-        # Fix root detection
-        "ro.build.selinux": "1",
-        "ro.build.tags": "release-keys",
-        "ro.secure": "1",
-        "ro.debuggable": "0",
-        "ro.build.type": "user",
         # Disable blur
         "ro.launcher.blur.appLaunch": "0",
         "ro.surface_flinger.supports_background_blur": "0",
