@@ -349,6 +349,27 @@ class A9AccessibilityService : AccessibilityService(),
                         }
                     )
 
+                    lightWarmSeekbar.min = 0
+                    lightWarmSeekbar.max = 254
+                    lightWarmSeekbar.progress = max(SystemSettingsManager.getBrightnessFromSetting(this@A9AccessibilityService) - 1, 0)
+                    lightWarmSeekbar.setOnSeekBarChangeListener(
+                        object : SeekBar.OnSeekBarChangeListener {
+                            override fun onProgressChanged(
+                                seekBar: SeekBar?,
+                                progress: Int,
+                                fromUser: Boolean
+                            ) {
+                                if (fromUser) {
+                                    val brightnessValue = progress.toString()
+                                    commandRunner.runCommands(arrayOf("br_wm$brightnessValue")) // Warm backlight command
+                                }
+                            }
+
+                            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+                        }
+                    )
+
                     buttonNight.text = when(SystemSettingsManager.getNightLightMode(this@A9AccessibilityService)){
                         SystemSettingsManager.NightLightMode.Manual -> "Manual"
                         SystemSettingsManager.NightLightMode.Auto -> "Auto"
