@@ -1531,7 +1531,7 @@ def main():
 
     with MountImage('s-ab-raw.img', 'd'):
         replace_file("d/system/priv-app/TrebleApp/TrebleApp.apk")
-        replace_file("d/system/product/overlay/treble-overlay-Hisense-HLTE556N.apk")
+        replace_file("d/system/product/overlay/treble-overlay-Bigme-HiBreak_EEA.apk")
         replace_file("d/system/bin/a9_eink_server", perms = 0o755, owner = "root:2000", secontext = "u:object_r:phhsu_exec:s0")
         replace_file("d/system/priv-app/a9service.apk")
         replace_file("d/system/priv-app/org.fdroid.fdroid.privileged.apk")
@@ -1552,6 +1552,7 @@ def main():
 
     run_command("e2fsck -f -y s-ab-raw.img || true")
     run_command("resize2fs -M s-ab-raw.img")
+
 
     os.rename("s-ab-raw.img", "system_patched.img")
     shutil.move("system_patched.img", "../system_patched.img")
