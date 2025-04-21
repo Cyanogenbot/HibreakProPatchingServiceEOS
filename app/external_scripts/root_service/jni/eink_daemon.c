@@ -89,18 +89,10 @@ void applyThemeCustomization(int theme_style_index, const char* hex_color) {
     execute_settings_command(json_str);
 }
 
+
 void epdForceClear() {
-    const char* filePath = "/sys/devices/platform/soc/soc:qcom,dsi-display-primary/epd_force_clear";
-    int fd = open(filePath, O_WRONLY);
-    if (fd == -1) {
-        LOGE("Error writing to %s: %s\n", filePath, strerror(errno));
-        return;
-    }
-    if (write(fd, "1", 1) == -1) {
-        LOGE("Error writing to %s: %s\n", filePath, strerror(errno));
-    }
-    close(fd);
 }
+
 
 void epdCommitBitmap() {
     const char* filePath = "/sys/devices/platform/soc/soc:qcom,dsi-display-primary/epd_commit_bitmap";
@@ -241,11 +233,11 @@ void processCommand(const char* command) {
     } else if (strcmp(command, "r") == 0) {
         epdForceClear();
     } else if (strcmp(command, "c") == 0) {
-        writeToEpdDisplayMode("177");
+        writeToEpdDisplayMode("176");
     } else if (strcmp(command, "b") == 0) {
         writeToEpdDisplayMode("178");
     } else if (strcmp(command, "s") == 0) {
-        writeToEpdDisplayMode("180");
+        writeToEpdDisplayMode("177");
     } else if (strcmp(command, "p") == 0) {
         writeToEpdDisplayMode("179");
     } else if (strncmp(command, "stw", 3) == 0) {
