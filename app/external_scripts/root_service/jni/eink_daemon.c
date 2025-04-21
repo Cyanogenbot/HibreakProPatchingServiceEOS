@@ -125,6 +125,40 @@ void writeToEpdDisplayMode(const char* value) {
     close(fd);
 }
 
+void setColdBacklight(const char* brightness) {
+    const char* coldBacklightPath = "/sys/devices/platform/11d01000.i2c7/i2c-7/7-0036/lm3630a_cold_light";
+    if(!valid_number(brightness)){
+        LOGE("Error writing to %s: Invalid Brightness Value\n", coldBacklightPath);
+        return;
+    }
+    int fd = open(coldBacklightPath, O_WRONLY);
+    if (fd == -1) {
+        LOGE("Error writing to %s: %s\n", coldBacklightPath, strerror(errno));
+        return;
+    }
+    if (write(fd, brightness, strlen(brightness)) == -1) {
+        LOGE("Error writing to %s: %s\n", coldBacklightPath, strerror(errno));
+    }
+    close(fd);
+}
+
+void setWarmBacklight(const char* brightness) {
+    const char* warmBacklightPath = "/sys/devices/platform/11d01000.i2c7/i2c-7/7-0036/lm3630a_warm_light";
+    if(!valid_number(brightness)){
+        LOGE("Error writing to %s: Invalid Brightness Value\n", warmBacklightPath);
+        return;
+    }
+    int fd = open(warmBacklightPath, O_WRONLY);
+    if (fd == -1) {
+        LOGE("Error writing to %s: %s\n", warmBacklightPath, strerror(errno));
+        return;
+    }
+    if (write(fd, brightness, strlen(brightness)) == -1) {
+        LOGE("Error writing to %s: %s\n", warmBacklightPath, strerror(errno));
+    }
+    close(fd);
+}
+
 void setWhiteThreshold(const char* brightness) {
     const char* whiteThresholdPath ="/sys/devices/platform/soc/soc:qcom,dsi-display-primary/epd_white_threshold";
     if(!valid_number(brightness)){
@@ -266,7 +300,14 @@ void processCommand(const char* command) {
         } else {
             LOGE("Invalid theme command format");
         }
-    } else {
+    } else if (strncmp(command, "br_co", 5) == 0) {
+        if(valid_number(command+5))
+            setColdBacklight(command+5);
+    } else if (strncmp(command, "br_wm", 5) == 0) {
+        if(valid_number(command+5))
+            setWarmBacklight(command+5);
+    }
+    else {
         LOGE("Unknown command: %s", command);
     }
 }

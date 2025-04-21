@@ -335,10 +335,11 @@ class A9AccessibilityService : AccessibilityService(),
                                 progress: Int,
                                 fromUser: Boolean
                             ) {
-                                if(fromUser)
-                                    SystemSettingsManager.setBrightnessSetting(this@A9AccessibilityService, progress + 1)
+                                if(fromUser) {
+                                    val brightnessValue = progress.toString()
+                                    commandRunner.runCommands(arrayOf("br_co$brightnessValue"))
+                                }
                             }
-
                             override fun onStartTrackingTouch(seekBar: SeekBar?) {
                             }
 
