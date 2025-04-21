@@ -1482,13 +1482,13 @@ def update_vndk_rc():
 
         if not any("on property:sys.linevibrator_open=*" in line for line in lines):
             file.write("\non property:sys.linevibrator_open=*\n")
-            file.write("    write /sys/class/backlight/ktd3137-bl-3/brightness ${sys.linevibrator_open}\n")
-            file.write("    write /sys/class/backlight/aw99703-bl-1/brightness ${sys.linevibrator_open}\n\n")
+            file.write("    write /sys/devices/platform/11d01000.i2c7/i2c-7/7-0036/lm3630a_cold_light ${sys.linevibrator_open}\n")
+            file.write("    write /sys/devices/platform/11d01000.i2c7/i2c-7/7-0036/lm3630a_warm_light ${sys.linevibrator_open}\n\n")
 
         if not any("on property:sys.linevibrator_short=*" in line for line in lines):
             file.write("\non property:sys.linevibrator_short=*\n")
-            file.write("    write /sys/class/backlight/ktd3137-bl-4/brightness ${sys.linevibrator_short}\n")
-            file.write("    write /sys/class/backlight/aw99703-bl-2/brightness ${sys.linevibrator_short}\n\n")
+            file.write("    write /sys/devices/platform/11d01000.i2c7/i2c-7/7-0036/lm3630a_cold_light ${sys.linevibrator_short}\n")
+            file.write("    write /sys/devices/platform/11d01000.i2c7/i2c-7/7-0036/lm3630a_warm_light ${sys.linevibrator_short}\n\n")
 
 def main():
     if len(sys.argv) != 2:
