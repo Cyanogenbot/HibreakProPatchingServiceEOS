@@ -47,6 +47,8 @@ class A9AccessibilityService : AccessibilityService(),
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var buttonActionManager: ButtonActionManager
     private var isScreenOn = true
+    private var originalColdBacklight = 0
+    private var originalWarmBacklight = 0
 
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -58,11 +60,15 @@ class A9AccessibilityService : AccessibilityService(),
                         handler.postDelayed({
                             commandRunner.runCommands(arrayOf(Commands.SPEED_CLEAR))
                         }, 150)
+                    originalColdBacklight = menuBinding?.lightSeekbar?.progress ?: 0
+                    originalWarmBacklight = menuBinding?.lightWarmSeekbar?.progress ?: 0
+                    commandRunner.runCommands(arrayOf("br_co0", "br_wm0"))
                 }
                 Intent.ACTION_SCREEN_ON -> {
                     isScreenOn = true
                     if (sharedPreferences.getBoolean("refresh_on_lock", false))
                         refreshModeManager.applyMode()
+                    commandRunner.runCommands(arrayOf("br_co$originalColdBacklight", "br_wm$originalWarmBacklight"))
                 }
             }
         }
