@@ -238,11 +238,11 @@ class A9AccessibilityService : AccessibilityService(),
                         else -> "OFF"
                     }
                     updateButtons(refreshModeManager.currentMode)
-                    val staticAodVisibility =
-                        if(!sharedPreferences.getBoolean("disable_show_per_app_aod_settings", false))
-                            View.VISIBLE
-                        else
-                            View.GONE
+                    val staticAodVisibility = View.GONE
+                        // if(!sharedPreferences.getBoolean("disable_show_per_app_aod_settings", false))
+                        //     View.VISIBLE
+                        // else
+                        //     View.GONE
                     enableReaderModeText.setIsReader(staticAODOpacityManager.isReader)
                     staticAodText.visibility = staticAodVisibility
                     staticAodLinearLayout.visibility = staticAodVisibility
