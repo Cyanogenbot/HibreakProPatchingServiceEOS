@@ -159,6 +159,23 @@ void setWarmBacklight(const char* brightness) {
     close(fd);
 }
 
+void setGlobalAutoRefresh(const char* value) {
+    const char* globalAutoRefreshPath = "/sys/kernel/debug/eink_debug/clean_a2";
+    if(!valid_number(value)){
+        LOGE("Error writing to %s: Invalid Number\n", globalAutoRefreshPath);
+        return;
+    }
+    int fd = open(globalAutoRefreshPath, O_WRONLY);
+    if (fd == -1) {
+        LOGE("Error writing to %s: %s\n", globalAutoRefreshPath, strerror(errno));
+        return;
+    }
+    if (write(fd, value, strlen(value)) == -1) {
+        LOGE("Error writing to %s: %s\n", globalAutoRefreshPath, strerror(errno));
+    }
+    close(fd);
+}
+
 void setWhiteThreshold(const char* brightness) {
     const char* whiteThresholdPath ="/sys/devices/platform/soc/soc:qcom,dsi-display-primary/epd_white_threshold";
     if(!valid_number(brightness)){
@@ -306,6 +323,9 @@ void processCommand(const char* command) {
     } else if (strncmp(command, "br_wm", 5) == 0) {
         if(valid_number(command+5))
             setWarmBacklight(command+5);
+    } else if (strncmp(command, "au_br", 5) == 0) {
+        if(valid_number(command+5))
+            setGlobalAutoRefresh(command+7);
     }
     else {
         LOGE("Unknown command: %s", command);
