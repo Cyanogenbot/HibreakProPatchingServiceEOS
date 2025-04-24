@@ -325,7 +325,7 @@ void processCommand(const char* command) {
             setWarmBacklight(command+5);
     } else if (strncmp(command, "au_br", 5) == 0) {
         if(valid_number(command+5))
-            setGlobalAutoRefresh(command+7);
+            setGlobalAutoRefresh(command+5);
     }
     else {
         LOGE("Unknown command: %s", command);
