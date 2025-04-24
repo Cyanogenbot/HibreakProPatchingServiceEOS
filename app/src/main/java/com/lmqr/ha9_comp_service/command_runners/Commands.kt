@@ -11,4 +11,5 @@ object Commands {
     const val SPEED_BALANCED = "b"
     const val SPEED_SMOOTH = "s"
     const val SPEED_FAST = "p"
+    const val AUTO_REFRESH = "au_br"
 }
