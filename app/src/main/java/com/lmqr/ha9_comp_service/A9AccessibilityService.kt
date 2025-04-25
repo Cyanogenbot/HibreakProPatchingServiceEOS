@@ -231,7 +231,7 @@ class A9AccessibilityService : AccessibilityService(),
                     root.visibility = View.GONE
                 } else {
                     root.visibility = View.VISIBLE
-                    lightSeekbar.progress = max(SystemSettingsManager.getBrightnessFromSetting(this@A9AccessibilityService) - 1, 0)
+                    // lightSeekbar.progress = max(SystemSettingsManager.getBrightnessFromSetting(this@A9AccessibilityService) - 1, 0)
                     // buttonNight.text = when(SystemSettingsManager.getNightLightMode(this@A9AccessibilityService)){
                     //     SystemSettingsManager.NightLightMode.Manual -> "Manual"
                     //     SystemSettingsManager.NightLightMode.Auto -> "Auto"
@@ -341,7 +341,7 @@ class A9AccessibilityService : AccessibilityService(),
 
                     lightSeekbar.min = 0
                     lightSeekbar.max = 254
-                    lightSeekbar.progress = max(SystemSettingsManager.getBrightnessFromSetting(this@A9AccessibilityService) - 1, 0)
+                    // lightSeekbar.progress = max(SystemSettingsManager.getBrightnessFromSetting(this@A9AccessibilityService) - 1, 0)
                     lightSeekbar.setOnSeekBarChangeListener(
                         object : SeekBar.OnSeekBarChangeListener {
                             override fun onProgressChanged(
@@ -365,7 +365,7 @@ class A9AccessibilityService : AccessibilityService(),
 
                     lightWarmSeekbar.min = 0
                     lightWarmSeekbar.max = 254
-                    lightWarmSeekbar.progress = max(SystemSettingsManager.getBrightnessFromSetting(this@A9AccessibilityService) - 1, 0)
+                    // lightWarmSeekbar.progress = max(SystemSettingsManager.getBrightnessFromSetting(this@A9AccessibilityService) - 1, 0)
                     lightWarmSeekbar.setOnSeekBarChangeListener(
                         object : SeekBar.OnSeekBarChangeListener {
                             override fun onProgressChanged(
