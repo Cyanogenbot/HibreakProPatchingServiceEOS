@@ -3,10 +3,11 @@ package com.lmqr.ha9_comp_service.button_mapper
 import android.content.Context
 import androidx.preference.PreferenceManager
 import com.lmqr.ha9_comp_service.command_runners.CommandRunner
+import com.lmqr.ha9_comp_service.RefreshModeManager
 
-class ButtonActionManager(commandRunner: CommandRunner) {
+class ButtonActionManager(commandRunner: CommandRunner, refreshModeManager: RefreshModeManager) {
     private val buttonCommands = mapOf(
-        "clear" to ClearScreenButtonAction(commandRunner),
+        "clear" to ClearScreenButtonAction(commandRunner, refreshModeManager),
         "next_track" to NextTrackButtonAction(),
         "toggle_music" to TogglePauseButtonAction(),
         "back" to BackButtonAction(),

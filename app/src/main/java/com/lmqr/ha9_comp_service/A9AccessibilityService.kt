@@ -121,7 +121,7 @@ class A9AccessibilityService : AccessibilityService(),
             resources.getStringArray(R.array.static_lockscreen_bg_opacity_values).map(Integer::parseInt).toIntArray(),
         )
 
-        buttonActionManager = ButtonActionManager(commandRunner)
+        buttonActionManager = ButtonActionManager(commandRunner, refreshModeManager)
 
         val filterScreen = IntentFilter()
         filterScreen.addAction(Intent.ACTION_SCREEN_ON)
