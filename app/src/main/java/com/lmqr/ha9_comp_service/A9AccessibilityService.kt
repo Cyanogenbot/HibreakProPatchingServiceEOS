@@ -168,6 +168,26 @@ class A9AccessibilityService : AccessibilityService(),
                 else
                     buttonActionManager.executeLongPressScreenOff(this@A9AccessibilityService)
             }
+            override fun onSinglePressTop() {
+                if(isScreenOn)
+                    buttonActionManager.executeSinglePressTop(this@A9AccessibilityService)
+                else
+                    buttonActionManager.executeSinglePressScreenOffTop(this@A9AccessibilityService)
+            }
+
+            override fun onDoublePressTop() {
+                if(isScreenOn)
+                    buttonActionManager.executeDoublePressTop(this@A9AccessibilityService)
+                else
+                    buttonActionManager.executeDoublePressScreenOffTop(this@A9AccessibilityService)
+            }
+
+            override fun onLongPressTop() {
+                if(isScreenOn)
+                    buttonActionManager.executeLongPressTop(this@A9AccessibilityService)
+                else
+                    buttonActionManager.executeLongPressScreenOffTop(this@A9AccessibilityService)
+            }
         }
     )
 
@@ -178,6 +198,13 @@ class A9AccessibilityService : AccessibilityService(),
             else
                 hardwareGestureDetector.onKeyEvent(event.action, event.eventTime)
         }
+        if(event.scanCode == 60){
+            if (!Settings.canDrawOverlays(baseContext))
+                    requestOverlayPermission()
+            else
+                hardwareGestureDetector.onKeyEventTop(event.action, event.eventTime)
+        }
+
         return super.onKeyEvent(event)
     }
 
