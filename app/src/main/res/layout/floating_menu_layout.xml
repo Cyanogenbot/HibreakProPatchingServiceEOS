@@ -241,14 +241,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Auto Refresh" />
+                android:text="Auto Refresh"
+                android:thumbTint="@color/black" />
 
             <Switch
                 android:id="@+id/anti_shake"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Anti-Shake" />
+                android:text="Anti-Shake"
+                android:thumbTint="@color/black" />
 
         </LinearLayout>
 
