@@ -168,21 +168,26 @@ class A9AccessibilityService : AccessibilityService(),
                 else
                     buttonActionManager.executeLongPressScreenOff(this@A9AccessibilityService)
             }
-            override fun onSinglePressTop() {
+        }
+    )
+
+    private val hardwareGestureDetectorTop = HardwareGestureDetector(
+        object: HardwareGestureDetector.OnGestureListener{
+            override fun onSinglePress() {
                 if(isScreenOn)
                     buttonActionManager.executeSinglePressTop(this@A9AccessibilityService)
                 else
                     buttonActionManager.executeSinglePressScreenOffTop(this@A9AccessibilityService)
             }
 
-            override fun onDoublePressTop() {
+            override fun onDoublePress() {
                 if(isScreenOn)
                     buttonActionManager.executeDoublePressTop(this@A9AccessibilityService)
                 else
                     buttonActionManager.executeDoublePressScreenOffTop(this@A9AccessibilityService)
             }
 
-            override fun onLongPressTop() {
+            override fun onLongPress() {
                 if(isScreenOn)
                     buttonActionManager.executeLongPressTop(this@A9AccessibilityService)
                 else
@@ -202,7 +207,7 @@ class A9AccessibilityService : AccessibilityService(),
             if (!Settings.canDrawOverlays(baseContext))
                     requestOverlayPermission()
             else
-                hardwareGestureDetector.onKeyEventTop(event.action, event.eventTime)
+                hardwareGestureDetectorTop.onKeyEvent(event.action, event.eventTime)
         }
 
         return super.onKeyEvent(event)

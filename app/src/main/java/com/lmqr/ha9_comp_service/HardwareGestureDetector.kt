@@ -65,59 +65,9 @@ class HardwareGestureDetector(
         fun onSinglePress()
         fun onDoublePress()
         fun onLongPress()
-        fun onSinglePressTop()
-        fun onDoublePressTop()
-        fun onLongPressTop()
-
     }
 
     fun onKeyEvent(action: Int, eventTime: Long) {
-        when (action) {
-            MotionEvent.ACTION_DOWN -> {
-                if (eventTime - lastUpTime <= DOUBLE_TAP_DELAY) {
-                    isDoubleTapping = true
-                    listener.onDoublePress()
-                    handler.removeMessages(SINGLE_PRESS)
-                } else {
-                    isDoubleTapping = false
-                }
-                isDown = true
-                inLongPress = false
-                handler.sendEmptyMessageAtTime(LONG_PRESS, eventTime + LONG_PRESS_DELAY)
-            }
-
-            MotionEvent.ACTION_UP -> {
-                isDown = false
-                handler.removeMessages(LONG_PRESS)
-
-                when {
-                    inLongPress -> {
-                        inLongPress = false
-                    }
-                    isDoubleTapping-> {
-                        isDoubleTapping = false
-                    }
-                    else -> {
-                        handler.sendEmptyMessageAtTime(SINGLE_PRESS, eventTime + DOUBLE_TAP_DELAY)
-                    }
-                }
-
-                lastUpTime = eventTime
-            }
-
-            MotionEvent.ACTION_CANCEL -> {
-                handler.removeMessages(LONG_PRESS)
-                handler.removeMessages(SINGLE_PRESS)
-                isDown = false
-                inLongPress = false
-                isDoubleTapping = false
-            }
-
-            else -> {}
-        }
-    }
-
-    fun onKeyEventTop(action: Int, eventTime: Long) {
         when (action) {
             MotionEvent.ACTION_DOWN -> {
                 if (eventTime - lastUpTime <= DOUBLE_TAP_DELAY) {

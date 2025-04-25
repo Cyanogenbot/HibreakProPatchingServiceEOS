@@ -16,6 +16,7 @@ class ButtonActionManager(commandRunner: CommandRunner, refreshModeManager: Refr
         "open_menu" to ToggleMenuButtonAction(),
         "toggle_night_light" to ToggleNightLightAction(),
         "toggle_backlight" to ToggleBacklightAction(),
+        "previous_track" to PreviousTrackButtonAction(),
     ).withDefault { DummyButtonAction() }
 
     fun executeLongPress(context: Context){
@@ -42,26 +43,26 @@ class ButtonActionManager(commandRunner: CommandRunner, refreshModeManager: Refr
         buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("single_press_eink_action_screen_off", "dummy")]?.execute(context)
     }
     fun executeLongPressTop(context: Context){
-        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("long_press_eink_action", "dummy")]?.execute(context)
+        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("top_long_press_eink_action", "dummy")]?.execute(context)
     }
 
     fun executeDoublePressTop(context: Context){
-        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("double_press_eink_action", "open_menu")]?.execute(context)
+        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("top_double_press_eink_action", "open_menu")]?.execute(context)
     }
 
     fun executeSinglePressTop(context: Context){
-        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("single_press_eink_action", "clear")]?.execute(context)
+        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("top_single_press_eink_action", "clear")]?.execute(context)
     }
 
     fun executeLongPressScreenOffTop(context: Context){
-        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("long_press_eink_action_screen_off", "dummy")]?.execute(context)
+        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("top_long_press_eink_action_screen_off", "dummy")]?.execute(context)
     }
 
     fun executeDoublePressScreenOffTop(context: Context){
-        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("double_press_eink_action_screen_off", "dummy")]?.execute(context)
+        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("top_double_press_eink_action_screen_off", "dummy")]?.execute(context)
     }
 
     fun executeSinglePressScreenOffTop(context: Context){
-        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("single_press_eink_action_screen_off", "dummy")]?.execute(context)
+        buttonCommands[PreferenceManager.getDefaultSharedPreferences(context).getString("top_single_press_eink_action_screen_off", "dummy")]?.execute(context)
     }    
 }
