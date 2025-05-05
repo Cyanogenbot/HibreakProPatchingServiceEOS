@@ -23,7 +23,7 @@ class FloatingMenuViewAccessor(val root: View) {
     
     val autoRefresh: Switch = root.findViewById(R.id.auto_refresh)
     val antiShake: Switch = root.findViewById(R.id.anti_shake)
-    
+     
     val buttonTransparent: Button = root.findViewById(R.id.button_transparent)
     val buttonSemiTransparent: Button = root.findViewById(R.id.button_semi_transparent)
     val buttonSemiOpaque: Button = root.findViewById(R.id.button_semi_opaque)
@@ -51,15 +51,15 @@ fun FloatingMenuViewAccessor?.close() = this?.run {
 
 fun FloatingMenuViewAccessor?.updateButtons(mode: RefreshMode) = this?.run {
     listOf(button1, button2, button3, button4).forEach { 
-        it.isSelected = false 
+        it.deselect()
     }
     
     when (mode) {
-        RefreshMode.CLEAR -> button1
-        RefreshMode.BALANCED -> button2
-        RefreshMode.SMOOTH -> button3
-        RefreshMode.SPEED -> button4
-    }?.isSelected = true
+        RefreshMode.CLEAR -> button1.select()
+        RefreshMode.BALANCED -> button2.select()
+        RefreshMode.SMOOTH -> button3.select()
+        RefreshMode.SPEED -> button4.select()
+    }
 }
 
 fun FloatingMenuViewAccessor?.updateButtons(mode: AODOpacity, isReader: Boolean) = this?.run {
@@ -77,7 +77,7 @@ fun FloatingMenuViewAccessor?.updateButtons(mode: AODOpacity, isReader: Boolean)
         AODOpacity.NOTSET -> null
     }?.isSelected = true
 }
-
+ 
 fun TextView.setIsReader(isReader: Boolean) {
     text = if (isReader) "Reader Mode: ON" else "Reader Mode: OFF"
     
