@@ -13,9 +13,3 @@ cc_binary {
     ],
     init_rc: ["etc/init/a9_eink_daemon.rc"],
 }
-
-prebuilt_etc {
-    name: "a9_eink_daemon.rc",
-    src: "etc/init/a9_eink_daemon.rc",
-    sub_dir: "init",
-}

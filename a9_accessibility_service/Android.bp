@@ -19,7 +19,6 @@ android_app {
     ],
     
     kotlincflags: ["-Xjvm-default=enable"],
-    plugins: ["kotlin-format"],
 }
 
 prebuilt_etc {
