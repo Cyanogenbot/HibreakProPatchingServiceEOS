@@ -14,3 +14,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+app/external_scripts/root_service/libs
+app/external_scripts/root_service/obj
+__pycache__
+TMP
+.vscode

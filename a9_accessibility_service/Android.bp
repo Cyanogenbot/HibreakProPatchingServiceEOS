@@ -1,0 +1,23 @@
+android_app {
+    name: "A9AccessibilityService",
+    srcs: ["src/**/*.java"],
+    resource_dirs: ["res"],
+    platform_apis: true,
+    certificate: "platform",
+    privileged: true,
+    
+    static_libs: [
+        "androidx.appcompat_appcompat",
+        "androidx.preference_preference",
+    ],
+    
+    required: [
+        "privapp_whitelist_com.lmqr.ha9_comp_service",
+    ],
+}
+
+prebuilt_etc {
+    name: "privapp_whitelist_com.lmqr.ha9_comp_service",
+    sub_dir: "permissions",
+    src: "privapp-permissions-accessibility.xml",
+}
