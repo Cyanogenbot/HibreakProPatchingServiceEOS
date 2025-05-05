@@ -9,7 +9,6 @@ android_app {
     static_libs: [
         "androidx.appcompat_appcompat",
         "androidx.preference_preference",
-        "androidx.databinding_viewbinding",
         "kotlin-stdlib",
         "com.google.android.material_material",
         "kotlin-stdlib-jdk7",

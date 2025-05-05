@@ -35,7 +35,6 @@ import com.lmqr.ha9_comp_service.button_mapper.ButtonActionManager
 import com.lmqr.ha9_comp_service.command_runners.CommandRunner
 import com.lmqr.ha9_comp_service.command_runners.Commands
 import com.lmqr.ha9_comp_service.command_runners.UnixSocketCommandRunner
-import com.lmqr.ha9_comp_service.databinding.FloatingMenuLayoutBinding
 import kotlin.math.max
 
 
@@ -253,7 +252,8 @@ class A9AccessibilityService : AccessibilityService(),
         return 0
     }
 
-    private var menuBinding: FloatingMenuLayoutBinding? = null
+    // Changed from FloatingMenuLayoutBinding to FloatingMenuViewAccessor
+    private var menuBinding: FloatingMenuViewAccessor? = null
 
     @SuppressLint("ClickableViewAccessibility", "InflateParams")
     fun openFloatingMenu() {
@@ -297,8 +297,8 @@ class A9AccessibilityService : AccessibilityService(),
                     y = getNavBarHeight()
                 }
 
-                menuBinding = FloatingMenuLayoutBinding.bind(view).apply {
-                    root.setOnTouchListener { _, event ->
+                menuBinding = FloatingMenuViewAccessor(view).apply {
+                    root.setOnTouchListener { v: View, event: MotionEvent ->
                         if (event.action == MotionEvent.ACTION_OUTSIDE)
                             close()
                         false
@@ -321,14 +321,14 @@ class A9AccessibilityService : AccessibilityService(),
                         updateButtons(refreshModeManager.currentMode)
                     }
 
-                    autoRefresh.setOnCheckedChangeListener { _, isChecked ->
+                    autoRefresh.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
                         if (isChecked) {
                             commandRunner.runCommands(arrayOf("au_br1"))
                         } else {
                             commandRunner.runCommands(arrayOf("au_br0"))
                         }
                     }
-                    antiShake.setOnCheckedChangeListener { _, isChecked ->
+                    antiShake.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
                         if (isChecked) {
                             commandRunner.runCommands(arrayOf("an_fl1"))
                         } else {
@@ -423,21 +423,6 @@ class A9AccessibilityService : AccessibilityService(),
                         }
                     )
 
-                    // buttonNight.text = when(SystemSettingsManager.getNightLightMode(this@A9AccessibilityService)){
-                    //     SystemSettingsManager.NightLightMode.Manual -> "Manual"
-                    //     SystemSettingsManager.NightLightMode.Auto -> "Auto"
-                    //     else -> "OFF"
-                    // }
-
-                    // buttonNight.setOnClickListener {
-                    //     val nextMode = SystemSettingsManager.setNextNightLightMode(this@A9AccessibilityService)
-                    //     buttonNight.text = when(nextMode){
-                    //         SystemSettingsManager.NightLightMode.Manual -> "Manual"
-                    //         SystemSettingsManager.NightLightMode.Auto -> "Auto"
-                    //         else -> "OFF"
-                    //     }
-                    // }
-
                     updateButtons(refreshModeManager.currentMode)
                     updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
 
@@ -528,32 +513,6 @@ fun AccessibilityEvent?.letPackageNameClassName(block: (String, String) -> Unit)
     }
 }
 
-fun FloatingMenuLayoutBinding?.close() = this?.run {
-    root.visibility = View.GONE
-}
-
-fun FloatingMenuLayoutBinding?.updateButtons(mode: RefreshMode) = this?.run {
-    listOf(button1, button2, button3, button4).forEach(Button::deselect)
-    when (mode) {
-        RefreshMode.CLEAR -> button1
-        RefreshMode.BALANCED -> button2
-        RefreshMode.SMOOTH -> button3
-        RefreshMode.SPEED -> button4
-    }.select()
-}
-
-fun FloatingMenuLayoutBinding?.updateButtons(mode: AODOpacity, isReader: Boolean) = this?.run {
-    listOf(buttonTransparent, buttonSemiTransparent, buttonSemiOpaque, buttonOpaque).forEach(Button::deselect)
-    if(!isReader)
-        when (mode) {
-            AODOpacity.CLEAR-> buttonTransparent
-            AODOpacity.SEMICLEAR -> buttonSemiTransparent
-            AODOpacity.SEMIOPAQUE -> buttonSemiOpaque
-            AODOpacity.OPAQUE -> buttonOpaque
-            else -> null
-        }?.select()
-}
-
 fun Button.deselect() {
     setBackgroundResource(R.drawable.drawable_border_normal)
     setTextColor(Color.BLACK)
@@ -562,16 +521,4 @@ fun Button.deselect() {
 fun Button.select() {
     setBackgroundResource(R.drawable.drawable_border_pressed)
     setTextColor(Color.WHITE)
-}
-
-fun TextView.setIsReader(isReader: Boolean) {
-    text = if(isReader)
-        "ON"
-    else
-        "OFF"
-    val endDrawableId = if(isReader)
-        R.drawable.baseline_book_24
-    else
-        R.drawable.baseline_book_closed_24
-    setCompoundDrawablesWithIntrinsicBounds(0, 0, endDrawableId, 0)
 }
