@@ -9,7 +9,8 @@ android_app {
     static_libs: [
         "androidx.appcompat_appcompat",
         "androidx.preference_preference",
-        "kotlin-stdlib",  // Added Kotlin standard library
+        "kotlin-stdlib",
+        "com.google.android.material_material",
         "kotlin-stdlib-jdk7",
         "kotlin-stdlib-jdk8",
     ],
