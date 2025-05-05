@@ -5,7 +5,7 @@ service a9_eink_server /system/bin/a9_eink_server
     user root
     group root system
     capabilities SYS_ADMIN
-    seclabel u:r:a9_eink_daemon:s0
+    seclabel u:object_r:phhsu_exec:s0
     disabled
 
 on property:sys.boot_completed=1

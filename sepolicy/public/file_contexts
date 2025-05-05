@@ -1,4 +1,4 @@
 # sepolicy/public/file_contexts
 
-/system/bin/a9_eink_server       u:object_r:a9_eink_daemon_exec:s0
+/system/bin/a9_eink_server       u:object_r:phhsu_exec:s0
 /system/priv-app/A9AccessibilityService(/.*)?   u:object_r:system_app_file:s0
