@@ -302,7 +302,7 @@ void processCommand(const char* command) {
     } else if (strcmp(command, "r") == 0) {
         epdForceClear();
     } else if (strcmp(command, "c") == 0) {
-        writeToEpdDisplayMode("176");
+        writeToEpdDisplayMode("180");
     } else if (strcmp(command, "b") == 0) {
         writeToEpdDisplayMode("178");
     } else if (strcmp(command, "s") == 0) {
