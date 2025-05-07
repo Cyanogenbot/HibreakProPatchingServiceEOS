@@ -47,6 +47,8 @@ class A9AccessibilityService : AccessibilityService(),
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var buttonActionManager: ButtonActionManager
     private lateinit var brightnessManager: BrightnessManager
+    private lateinit var displaySettingsManager: DisplaySettingsManager
+
     private var isScreenOn = true
 
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -120,6 +122,7 @@ class A9AccessibilityService : AccessibilityService(),
 
         buttonActionManager = ButtonActionManager(commandRunner, refreshModeManager)
         brightnessManager = BrightnessManager(sharedPreferences, commandRunner)
+        displaySettingsManager = DisplaySettingsManager(sharedPreferences, commandRunner)
 
         val filterScreen = IntentFilter()
         filterScreen.addAction(Intent.ACTION_SCREEN_ON)
@@ -138,6 +141,10 @@ class A9AccessibilityService : AccessibilityService(),
         staticAODOpacityManager.applyMode()
         staticAODOpacityManager.applyReader()
         updateMaxBrightness(sharedPreferences)
+
+        refreshModeManager.applyMode()
+        brightnessManager.applyBrightness()
+        displaySettingsManager.applySettings()
     }
 
     override fun onInterrupt() {
@@ -320,21 +327,8 @@ class A9AccessibilityService : AccessibilityService(),
                         updateButtons(refreshModeManager.currentMode)
                     }
 
-                    autoRefresh.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
-                        if (isChecked) {
-                            commandRunner.runCommands(arrayOf("au_br1"))
-                        } else {
-                            commandRunner.runCommands(arrayOf("au_br0"))
-                        }
-                    }
-                    antiShake.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
-                        if (isChecked) {
-                            commandRunner.runCommands(arrayOf("an_fl1"))
-                        } else {
-                            commandRunner.runCommands(arrayOf("an_fl0"))
-                        }
-                    }
-
+                    displaySettingsManager.setupSwitches(autoRefresh, antiShake)
+                    
                     buttonTransparent.setOnClickListener{
                         staticAODOpacityManager.changeMode(AODOpacity.CLEAR)
                         updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
