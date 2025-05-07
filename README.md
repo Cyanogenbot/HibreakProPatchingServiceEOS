@@ -1,4 +1,4 @@
-Automatically patch system.img for use with Hisense A9, adding eink features support
+Automatically patch system.img for use with Hibreak Pro, adding eink features support
 For advanced users, check xda for pre-patched images.
 
 To run the script on linux and patch your own treble based system.img you simply have to:
