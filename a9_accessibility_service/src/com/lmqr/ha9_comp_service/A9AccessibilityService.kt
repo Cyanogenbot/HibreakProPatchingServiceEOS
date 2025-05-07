@@ -136,15 +136,6 @@ class A9AccessibilityService : AccessibilityService(),
         filterEink.addAction("EINK_REFRESH_SPEED_SMOOTH")
         filterEink.addAction("EINK_REFRESH_SPEED_FAST")
         registerReceiver(receiverEink, filterEink, RECEIVER_EXPORTED)
-
-        updateColorScheme(sharedPreferences)
-        staticAODOpacityManager.applyMode()
-        staticAODOpacityManager.applyReader()
-        updateMaxBrightness(sharedPreferences)
-
-        refreshModeManager.applyMode()
-        brightnessManager.applyBrightness()
-        displaySettingsManager.applySettings()
     }
 
     override fun onInterrupt() {
@@ -258,7 +249,6 @@ class A9AccessibilityService : AccessibilityService(),
         return 0
     }
 
-    // Changed from FloatingMenuLayoutBinding to FloatingMenuViewAccessor
     private var menuBinding: FloatingMenuViewAccessor? = null
 
     @SuppressLint("ClickableViewAccessibility", "InflateParams")
@@ -328,7 +318,7 @@ class A9AccessibilityService : AccessibilityService(),
                     }
 
                     displaySettingsManager.setupSwitches(autoRefresh, antiShake)
-                    
+
                     buttonTransparent.setOnClickListener{
                         staticAODOpacityManager.changeMode(AODOpacity.CLEAR)
                         updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
@@ -391,6 +381,28 @@ class A9AccessibilityService : AccessibilityService(),
     }
 
     override fun onServiceConnected() {
+        super.onServiceConnected()
+        Log.d("A9Service", "Service connected - applying all settings")
+        
+        handler.postDelayed({
+            refreshModeManager.applyMode()
+            Log.d("A9Service", "Applied refresh mode: ${refreshModeManager.currentMode}")
+            
+            handler.postDelayed({
+                brightnessManager.applyBrightness()
+                Log.d("A9Service", "Applied brightness: cold=${brightnessManager.coldBrightness}, warm=${brightnessManager.warmBrightness}")
+                
+                handler.postDelayed({
+                    displaySettingsManager.applySettings()
+                    Log.d("A9Service", "Applied display settings: autoRefresh=${displaySettingsManager.isAutoRefreshEnabled}, antiShake=${displaySettingsManager.isAntiShakeEnabled}")
+                    updateColorScheme(sharedPreferences)
+                    staticAODOpacityManager.applyMode()
+                    staticAODOpacityManager.applyReader()
+                    updateMaxBrightness(sharedPreferences)
+                    Log.d("A9Service", "Applied remaining settings")
+                }, 500)
+            }, 500)
+        }, 1000)
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
