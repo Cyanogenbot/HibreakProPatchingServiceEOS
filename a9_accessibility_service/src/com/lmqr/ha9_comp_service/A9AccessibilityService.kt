@@ -119,7 +119,7 @@ class A9AccessibilityService : AccessibilityService(),
         )
 
         buttonActionManager = ButtonActionManager(commandRunner, refreshModeManager)
-        brightnessManager = BrightnessManager(commandRunner, sharedPreferences)
+        brightnessManager = BrightnessManager(sharedPreferences, commandRunner)
 
         val filterScreen = IntentFilter()
         filterScreen.addAction(Intent.ACTION_SCREEN_ON)
