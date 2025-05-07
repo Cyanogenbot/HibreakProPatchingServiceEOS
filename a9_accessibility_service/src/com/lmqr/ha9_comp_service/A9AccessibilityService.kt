@@ -46,9 +46,8 @@ class A9AccessibilityService : AccessibilityService(),
     private lateinit var staticAODOpacityManager: StaticAODOpacityManager
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var buttonActionManager: ButtonActionManager
+    private lateinit var brightnessManager: BrightnessManager
     private var isScreenOn = true
-    private var originalColdBacklight = 0
-    private var originalWarmBacklight = 0
 
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -60,15 +59,13 @@ class A9AccessibilityService : AccessibilityService(),
                         handler.postDelayed({
                             commandRunner.runCommands(arrayOf(Commands.SPEED_CLEAR))
                         }, 150)
-                    originalColdBacklight = menuBinding?.lightSeekbar?.progress ?: 0
-                    originalWarmBacklight = menuBinding?.lightWarmSeekbar?.progress ?: 0
-                    commandRunner.runCommands(arrayOf("br_co0", "br_wm0"))
+                    brightnessManager.turnOffBrightness()
                 }
                 Intent.ACTION_SCREEN_ON -> {
                     isScreenOn = true
                     if (sharedPreferences.getBoolean("refresh_on_lock", false))
                         refreshModeManager.applyMode()
-                    commandRunner.runCommands(arrayOf("br_co$originalColdBacklight", "br_wm$originalWarmBacklight"))
+                    brightnessManager.applyBrightness()
                 }
             }
         }
@@ -122,6 +119,7 @@ class A9AccessibilityService : AccessibilityService(),
         )
 
         buttonActionManager = ButtonActionManager(commandRunner, refreshModeManager)
+        brightnessManager = BrightnessManager(commandRunner, sharedPreferences)
 
         val filterScreen = IntentFilter()
         filterScreen.addAction(Intent.ACTION_SCREEN_ON)
@@ -379,51 +377,7 @@ class A9AccessibilityService : AccessibilityService(),
                     }
                     enableReaderModeText.setIsReader(staticAODOpacityManager.isReader)
 
-                    lightSeekbar.min = 0
-                    lightSeekbar.max = 254
-                    // lightSeekbar.progress = max(SystemSettingsManager.getBrightnessFromSetting(this@A9AccessibilityService) - 1, 0)
-                    lightSeekbar.setOnSeekBarChangeListener(
-                        object : SeekBar.OnSeekBarChangeListener {
-                            override fun onProgressChanged(
-                                seekBar: SeekBar?,
-                                progress: Int,
-                                fromUser: Boolean
-                            ) {
-                                if(fromUser) {
-                                    val brightnessValue = progress.toString()
-                                    commandRunner.runCommands(arrayOf("br_co$brightnessValue"))
-                                }
-                            }
-                            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                            }
-
-                            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                            }
-
-                        }
-                    )
-
-                    lightWarmSeekbar.min = 0
-                    lightWarmSeekbar.max = 254
-                    // lightWarmSeekbar.progress = max(SystemSettingsManager.getBrightnessFromSetting(this@A9AccessibilityService) - 1, 0)
-                    lightWarmSeekbar.setOnSeekBarChangeListener(
-                        object : SeekBar.OnSeekBarChangeListener {
-                            override fun onProgressChanged(
-                                seekBar: SeekBar?,
-                                progress: Int,
-                                fromUser: Boolean
-                            ) {
-                                if (fromUser) {
-                                    val brightnessValue = progress.toString()
-                                    commandRunner.runCommands(arrayOf("br_wm$brightnessValue")) // Warm backlight command
-                                }
-                            }
-
-                            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-                            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-                        }
-                    )
-
+                    brightnessManager.setupSeekBars(lightSeekbar, lightWarmSeekbar)
                     updateButtons(refreshModeManager.currentMode)
                     updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
 
