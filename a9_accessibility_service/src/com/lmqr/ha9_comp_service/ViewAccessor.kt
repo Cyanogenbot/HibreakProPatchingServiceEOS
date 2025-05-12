@@ -23,17 +23,8 @@ class FloatingMenuViewAccessor(val root: View) {
     
     val autoRefresh: Switch = root.findViewById(R.id.auto_refresh)
     val antiShake: Switch = root.findViewById(R.id.anti_shake)
-     
-    val buttonTransparent: Button = root.findViewById(R.id.button_transparent)
-    val buttonSemiTransparent: Button = root.findViewById(R.id.button_semi_transparent)
-    val buttonSemiOpaque: Button = root.findViewById(R.id.button_semi_opaque)
-    val buttonOpaque: Button = root.findViewById(R.id.button_opaque)
-    
-    val staticAodText: LinearLayout = root.findViewById(R.id.static_aod_text)
-    val staticAodLinearLayout: LinearLayout = root.findViewById(R.id.static_aod_linear_layout)
     
     val settingsIcon: View = root.findViewById(R.id.settings_icon)
-    val enableReaderModeText: TextView = root.findViewById(R.id.enable_reader_mode_text)
     val lightSeekbar: SeekBar = root.findViewById(R.id.light_seekbar)
     val lightWarmSeekbar: SeekBar = root.findViewById(R.id.light_warm_seekbar)
     
@@ -60,27 +51,4 @@ fun FloatingMenuViewAccessor?.updateButtons(mode: RefreshMode) = this?.run {
         RefreshMode.SMOOTH -> button3.select()
         RefreshMode.SPEED -> button4.select()
     }
-}
-
-fun FloatingMenuViewAccessor?.updateButtons(mode: AODOpacity, isReader: Boolean) = this?.run {
-    enableReaderModeText.setIsReader(isReader)
-    
-    listOf(buttonTransparent, buttonSemiTransparent, buttonSemiOpaque, buttonOpaque).forEach { 
-        it.isSelected = false 
-    }
-    
-    when (mode) {
-        AODOpacity.CLEAR -> buttonTransparent
-        AODOpacity.SEMICLEAR -> buttonSemiTransparent
-        AODOpacity.SEMIOPAQUE -> buttonSemiOpaque
-        AODOpacity.OPAQUE -> buttonOpaque
-        AODOpacity.NOTSET -> null
-    }?.isSelected = true
-}
- 
-fun TextView.setIsReader(isReader: Boolean) {
-    text = if (isReader) "Reader Mode: ON" else "Reader Mode: OFF"
-    
-    val colorRes = if (isReader) R.color.reader_mode_on else R.color.black
-    setTextColor(ContextCompat.getColor(context, colorRes))
 }
