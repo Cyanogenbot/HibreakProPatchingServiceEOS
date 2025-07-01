@@ -40,6 +40,11 @@ However before building in the last step you should
          corresponding launch mode set in AndroidManifest.
          {@see android.view.Display#FLAG_SHOULD_SHOW_SYSTEM_DECORATIONS} -->
     <string name="config_secondaryHomePackage" translatable="false">foundation.e.blisslauncher</string>```
+6. Build! Your first build might take ages so enjoy the wait.
+7. Flash and enjoy your new privacy friendly rom
+
+> [!NOTE]
+> I do not make any security claims about this operating system as this is all bigme's and /e/os responsibility, I solely compiled the steps it took for me to build this rom myself. Due to bigme's recent badbox2 related problems I have returned my own HiBreak Pro, but for those who dare, this is all you need to get started!
 
 ## Licensing
 
