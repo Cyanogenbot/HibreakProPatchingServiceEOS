@@ -3,6 +3,9 @@ For advanced users, check xda for pre-patched images. Based on work from vbbot, 
 
 ## Additionally info on building this rom yourself in the future:
 Get started following the steps from: https://community.e.foundation/t/e-os-u-gsi-a14-unofficial/67048/18?u=diedeboef
+> [!WARNING]
+> 1. In step one, dont make run the first `mkdir a14` and `cd a14` as this will only create confusion  and result into 2 a14 folders.
+> 2. Then before running `repo sync -j 1 --fail-fast --force-sync` to download all of the repo’s, it is important you first remove the line locating github in the local_manifests/manifest.xml file. Because the repo sync wont work without.
 
 ### Additional steps before building:
 However before building in the last step you should 
