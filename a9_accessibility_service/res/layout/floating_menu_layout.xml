@@ -79,7 +79,79 @@
             android:text="@string/speed" />
 
     </LinearLayout>
-    
+
+    <LinearLayout
+        android:id="@+id/static_aod_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_marginStart="70dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="@string/static_aod_opacity" />
+
+        <TextView
+            android:id="@+id/enable_reader_mode_text"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:text="OFF"
+            app:drawableEndCompat="@drawable/baseline_book_closed_24" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/static_aod_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:padding="5dp">
+        <Button
+            android:id="@+id/button_opaque"
+            style="@style/MenuButtonStyle"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/opaque"/>
+
+        <Button
+            android:id="@+id/button_semi_opaque"
+            style="@style/MenuButtonStyle"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/semiopaque"/>
+        <Button
+            android:id="@+id/button_semi_transparent"
+            style="@style/MenuButtonStyle"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/semiclear"/>
+
+        <Button
+            android:id="@+id/button_transparent"
+            style="@style/MenuButtonStyle"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:text="@string/clear"/>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

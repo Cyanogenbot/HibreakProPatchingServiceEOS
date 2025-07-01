@@ -23,6 +23,7 @@ class ClearScreenButtonAction(private val commandRunner: CommandRunner, private 
         val originalMode = refreshModeManager.currentMode
         commandRunner.runCommands(arrayOf(Commands.SPEED_CLEAR))
         simulateDisplayRefresh(context)
+        // commandRunner.runCommands(arrayOf(Commands.SPEED_FAST))
         refreshModeManager.changeMode(originalMode)
         refreshModeManager.applyMode()
     }

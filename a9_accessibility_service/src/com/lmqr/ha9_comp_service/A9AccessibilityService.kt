@@ -43,6 +43,7 @@ class A9AccessibilityService : AccessibilityService(),
     SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var commandRunner: CommandRunner
     private lateinit var refreshModeManager: RefreshModeManager
+    private lateinit var staticAODOpacityManager: StaticAODOpacityManager
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var buttonActionManager: ButtonActionManager
     private lateinit var brightnessManager: BrightnessManager
@@ -112,6 +113,13 @@ class A9AccessibilityService : AccessibilityService(),
             sharedPreferences,
             commandRunner
         )
+        staticAODOpacityManager = StaticAODOpacityManager(
+            sharedPreferences,
+            commandRunner,
+            resources.getStringArray(R.array.static_lockscreen_opacity_values).map(Integer::parseInt).toIntArray(),
+            resources.getStringArray(R.array.static_lockscreen_bg_opacity_values).map(Integer::parseInt).toIntArray(),
+        )
+
         buttonActionManager = ButtonActionManager(commandRunner, refreshModeManager)
         brightnessManager = BrightnessManager(sharedPreferences, commandRunner)
         displaySettingsManager = DisplaySettingsManager(sharedPreferences, commandRunner)
@@ -251,7 +259,22 @@ class A9AccessibilityService : AccessibilityService(),
                     root.visibility = View.GONE
                 } else {
                     root.visibility = View.VISIBLE
+                    // lightSeekbar.progress = max(SystemSettingsManager.getBrightnessFromSetting(this@A9AccessibilityService) - 1, 0)
+                    // buttonNight.text = when(SystemSettingsManager.getNightLightMode(this@A9AccessibilityService)){
+                    //     SystemSettingsManager.NightLightMode.Manual -> "Manual"
+                    //     SystemSettingsManager.NightLightMode.Auto -> "Auto"
+                    //     else -> "OFF"
+                    // }
                     updateButtons(refreshModeManager.currentMode)
+                    val staticAodVisibility = View.GONE
+                        // if(!sharedPreferences.getBoolean("disable_show_per_app_aod_settings", false))
+                        //     View.VISIBLE
+                        // else
+                        //     View.GONE
+                    enableReaderModeText.setIsReader(staticAODOpacityManager.isReader)
+                    staticAodText.visibility = staticAodVisibility
+                    staticAodLinearLayout.visibility = staticAodVisibility
+                    updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
                 }
             } ?: run {
 
@@ -296,6 +319,29 @@ class A9AccessibilityService : AccessibilityService(),
 
                     displaySettingsManager.setupSwitches(autoRefresh, antiShake)
 
+                    buttonTransparent.setOnClickListener{
+                        staticAODOpacityManager.changeMode(AODOpacity.CLEAR)
+                        updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
+                    }
+                    buttonSemiTransparent.setOnClickListener{
+                        staticAODOpacityManager.changeMode(AODOpacity.SEMICLEAR)
+                        updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
+                    }
+                    buttonSemiOpaque.setOnClickListener{
+                        staticAODOpacityManager.changeMode(AODOpacity.SEMIOPAQUE)
+                        updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
+                    }
+                    buttonOpaque.setOnClickListener{
+                        staticAODOpacityManager.changeMode(AODOpacity.OPAQUE)
+                        updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
+                    }
+                    val staticAodVisibility =
+                        if(!sharedPreferences.getBoolean("disable_show_per_app_aod_settings", false))
+                            View.VISIBLE
+                        else
+                            View.GONE
+                    staticAodText.visibility = staticAodVisibility
+                    staticAodLinearLayout.visibility = staticAodVisibility
 
                     settingsIcon.setOnClickListener {
                         val settingsIntent = Intent(
@@ -307,9 +353,17 @@ class A9AccessibilityService : AccessibilityService(),
                         startActivity(settingsIntent)
                     }
 
+                    enableReaderModeText.run{
+                        setOnClickListener{
+                            setIsReader(staticAODOpacityManager.toggleIsReader())
+                            updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
+                        }
+                    }
+                    enableReaderModeText.setIsReader(staticAODOpacityManager.isReader)
 
                     brightnessManager.setupSeekBars(lightSeekbar, lightWarmSeekbar)
                     updateButtons(refreshModeManager.currentMode)
+                    updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
 
                     wm.addView(root, layoutParams)
                 }
@@ -342,6 +396,9 @@ class A9AccessibilityService : AccessibilityService(),
                     displaySettingsManager.applySettings()
                     Log.d("A9Service", "Applied display settings: autoRefresh=${displaySettingsManager.isAutoRefreshEnabled}, antiShake=${displaySettingsManager.isAntiShakeEnabled}")
                     updateColorScheme(sharedPreferences)
+                    staticAODOpacityManager.applyMode()
+                    staticAODOpacityManager.applyReader()
+                    updateMaxBrightness(sharedPreferences)
                     Log.d("A9Service", "Applied remaining settings")
                 }, 500)
             }, 500)
@@ -358,6 +415,8 @@ class A9AccessibilityService : AccessibilityService(),
                 packageManager.getActivityInfo(componentName, 0)
                 refreshModeManager.onAppChange(pkgName)
                 menuBinding.updateButtons(refreshModeManager.currentMode)
+                staticAODOpacityManager.onAppChange(pkgName)
+                menuBinding.updateButtons(staticAODOpacityManager.currentOpacity, staticAODOpacityManager.isReader)
             } catch (_: PackageManager.NameNotFoundException) {
             }
         }
@@ -382,6 +441,10 @@ class A9AccessibilityService : AccessibilityService(),
         when (key) {
             "override_max_brightness" -> {
                 sharedPreferences?.let { updateMaxBrightness(it) }
+            }
+
+            "static_lockscreen_opacity", "static_lockscreen_type", "static_lockscreen_bg_opacity", "static_lockscreen_mix_color" -> {
+                staticAODOpacityManager.applyMode()
             }
 
             "color_scheme_type", "color_scheme_color" -> {

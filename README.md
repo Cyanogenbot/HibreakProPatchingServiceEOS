@@ -1,42 +1,29 @@
-/e/os tweaks for the Hibreak Pro, adding eink features support
-For advanced users, check xda for pre-patched images. Based on work from vbbot.
+Automatically patch system.img for use with Hibreak Pro, adding eink features support
+For advanced users, check xda for pre-patched images.
 
-## Additionally info on building this rom yourself in the future:
-Get started following the steps from: https://community.e.foundation/t/e-os-u-gsi-a14-unofficial/67048/18?u=diedeboef
+To run the script on linux and patch your own treble based system.img you simply have to:
 
-### Additional steps before building:
-However before building in the last step you should 
-1. move the repo contents into folder named a9_services within the a14/vendor folder.
-2. within a14/device/phh/treble/sepolicy add the following line at the bottom of the file_contexts file
-    
-    ```
-       /system/bin/a9_eink_server u:object_r:a9_eink_server_exec:s0
-    ```
+- Download a treble-droid based system.img you want to use
+- Download and extract a9_system_patcher.zip from https://github.com/damianmqr/a9_accessibility_service/releases/latest
+- Go in terminal to the folder containing unzipped files
+- Run `sudo bash patch_system_img.sh /path/to/system.img`
+- system_patched.img will be saved in the same directory, ready to be flashed
 
-3. Create a file named "vendorsetup.sh" in the `a14/device/phh/treble` folder and add the following content
-    
-    ```
-    export EOS_DEVICE=HiBreak Pro
-    export EOS_RELEASE_TYPE=UNOFFICIAL
-    export EOS_BRANCH_NAME=a14
-    export EOS_SIGNATURE_SPOOFING=restricted
-    ```
-4. Change the content of a14/device/phh/treble/treble_arm64_bvN.mk to match the treble_arm64_bvN.mk file in this repo.
-5. Add the following lines to the bottom of the a14/vendor/lineage/overlay/common/frameworks/base/core/res/res/values/config.xml file
-   ```
-   <!-- Component name for the activity that will be presenting the Recents UI, which will receive
-     special permissions for API related to fetching and presenting recent tasks. The default
-     configuration uses Launcehr3QuickStep as default launcher and points to the corresponding
-     recents component. When using a different default launcher, change this appropriately or
-     use the default systemui implementation: com.android.systemui/.recents.RecentsActivity -->
-    <string name="config_recentsComponentName" translatable="false">foundation.e.blisslauncher/com.android.quickstep.RecentsActivity</string>
+Flashing the resulting file is done the same as any other system.img
+**(make sure your bootloader is unlocked! and you have disabled vbmeta verification by reflashing with `fastboot flash vbmeta --disable-verity --disable-verification vbmeta.img`)**
 
-    <!-- This is the default launcher package with an activity to use on secondary displays that
-         support system decorations.
-         This launcher package must have an activity that supports multiple instances and has
-         corresponding launch mode set in AndroidManifest.
-         {@see android.view.Display#FLAG_SHOULD_SHOW_SYSTEM_DECORATIONS} -->
-    <string name="config_secondaryHomePackage" translatable="false">foundation.e.blisslauncher</string>```
+- reboot to fastbootd using `adb reboot fastboot` (or any other method)
+- run `fastboot flash system system_patched.img`
+- after that's done, run `fastboot -w`
+- run `fastboot reboot` and give it a few minutes
+
+Default E-ink features Usage:
+
+**Single Press E-Ink Button** - Refresh Screen
+
+**Double Press E-Ink Button** - Open E-Ink Menu with settings for Per-App refresh modes.
+
+These mappings can be easily changed in the E-Ink Settings app
 
 ## Licensing
 
