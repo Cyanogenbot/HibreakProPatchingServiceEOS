@@ -1,4 +1,4 @@
-/e/os tweaks for the Hibreak Pro, adding eink features support
+**/e/os** tweaks for the **Hibreak Pro**, adding eink features support
 For advanced users, check xda for pre-patched images. Based on work from vbbot, Colors and AndyCGYan.
 
 ## Additionally info on building this rom yourself in the future:
