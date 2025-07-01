@@ -1,5 +1,5 @@
 /e/os tweaks for the Hibreak Pro, adding eink features support
-For advanced users, check xda for pre-patched images. Based on work from vbbot.
+For advanced users, check xda for pre-patched images. Based on work from vbbot, Colors and AndyCGYan.
 
 ## Additionally info on building this rom yourself in the future:
 Get started following the steps from: https://community.e.foundation/t/e-os-u-gsi-a14-unofficial/67048/18?u=diedeboef
