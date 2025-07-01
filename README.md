@@ -44,7 +44,12 @@ However before building in the last step you should
          {@see android.view.Display#FLAG_SHOULD_SHOW_SYSTEM_DECORATIONS} -->
     <string name="config_secondaryHomePackage" translatable="false">foundation.e.blisslauncher</string>```
 6. Build! Your first build might take ages so enjoy the wait.
-7. Flash and enjoy your new privacy friendly rom
+> [!WARNING]
+> The first boot requires some fiddling:
+> 1. It might take a bit of time and fiddling with the hardware buttons for the display to work on first boot, havent figured out the fix to that, however what helps is doing your phone setup using an app like [SCRCPY](https://github.com/Genymobile/scrcpy) this allows you to see your phone screen during the setup. Because some parts of the setup are configured privately, they will not show up through scrcpy and have to be done throught the phone screen itself.
+> 2. Sometimes if the steps above do not work, running the following adb commands helps you get past the setup `sudo adb shell settings put global setup_wizard_has_run 1 && adb shell settings put secure user_setup_complete 1`
+
+8. Flash and enjoy your new privacy friendly rom
 
 ## Licensing
 
